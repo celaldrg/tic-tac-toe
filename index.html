@@ -1,0 +1,100 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Tic-Tac-Toe</title>
+  <meta name="description" content="Tic-Tac-Toe in the browser: an unbeatable minimax AI with three difficulty levels, a two-player mode, keyboard and touch controls, in English and Turkish.">
+  <meta name="theme-color" content="#0f172a">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Tic-Tac-Toe">
+  <meta property="og:description" content="Play Tic-Tac-Toe against an unbeatable minimax AI or a friend. Free and open source.">
+  <meta property="og:url" content="https://celaldrg.github.io/tic-tac-toe/">
+  <meta property="og:image" content="https://celaldrg.github.io/tic-tac-toe/docs/screenshot.png">
+  <meta name="twitter:card" content="summary_large_image">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%230f172a'/%3E%3Cpath d='M15 15 L31 31 M31 15 L15 31' stroke='%23ec4899' stroke-width='6' stroke-linecap='round'/%3E%3Ccircle cx='42' cy='42' r='9' fill='none' stroke='%2338bdf8' stroke-width='6'/%3E%3C/svg%3E">
+  <link rel="stylesheet" href="style.css">
+  <script type="module" src="src/main.js"></script>
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand">
+      <svg class="logo" viewBox="0 0 32 32" aria-hidden="true">
+        <rect width="32" height="32" rx="9" class="logo-bg"/>
+        <path d="M8 8 L15 15 M15 8 L8 15" class="logo-x"/>
+        <circle cx="21.5" cy="21.5" r="4.5" class="logo-o"/>
+      </svg>
+      <h1 data-i18n="title">Tic-Tac-Toe</h1>
+    </div>
+    <div class="actions">
+      <button id="new-game" class="btn" type="button" data-i18n="newGame">New game</button>
+      <button id="lang-toggle" class="btn btn-square" type="button" data-i18n="langButton" data-i18n-label="switchLang" aria-label="Switch to Turkish">TR</button>
+    </div>
+  </header>
+
+  <main class="layout">
+    <section class="scores" data-i18n-label="scoreboard" aria-label="Scoreboard">
+      <div class="score score-x" id="card-x">
+        <span class="score-head"><span class="score-mark" aria-hidden="true">X</span><span id="caption-x">You</span></span>
+        <span class="score-value" id="score-x">0</span>
+      </div>
+      <div class="score score-draws">
+        <span class="score-head" data-i18n="draws">Draws</span>
+        <span class="score-value" id="score-draws">0</span>
+      </div>
+      <div class="score score-o" id="card-o">
+        <span class="score-head"><span class="score-mark" aria-hidden="true">O</span><span id="caption-o">Computer</span></span>
+        <span class="score-value" id="score-o">0</span>
+      </div>
+    </section>
+
+    <section class="play">
+      <div class="status-row">
+        <p id="status" class="status" role="status" aria-live="polite"></p>
+        <button id="next-round" class="btn btn-primary" type="button" data-i18n="nextRound" hidden>Next round</button>
+      </div>
+      <div class="board-card">
+        <div class="board-area">
+          <div id="board" class="board" role="group" data-i18n-label="board" aria-label="Game board"></div>
+          <svg id="win-line" class="win-line" viewBox="0 0 300 300" aria-hidden="true">
+            <path id="win-path" pathLength="1" d="M0 0"/>
+          </svg>
+        </div>
+      </div>
+    </section>
+
+    <section id="settings" class="settings" data-i18n-label="settings" aria-label="Settings">
+      <div class="field field-mode">
+        <span class="field-label" id="mode-label" data-i18n="mode">Mode</span>
+        <div class="segmented" role="group" aria-labelledby="mode-label">
+          <button type="button" data-option="mode" data-value="ai" data-i18n="modeAi" aria-pressed="true">vs Computer</button>
+          <button type="button" data-option="mode" data-value="pvp" data-i18n="modePvp" aria-pressed="false">2 players</button>
+        </div>
+      </div>
+      <div class="field field-mark" id="mark-field">
+        <span class="field-label" id="mark-label" data-i18n="yourMark">Your mark</span>
+        <div class="segmented" role="group" aria-labelledby="mark-label">
+          <button type="button" class="seg-x" data-option="humanMark" data-value="X" aria-pressed="true">X</button>
+          <button type="button" class="seg-o" data-option="humanMark" data-value="O" aria-pressed="false">O</button>
+        </div>
+      </div>
+      <div class="field field-difficulty" id="difficulty-field">
+        <span class="field-label" id="difficulty-label" data-i18n="difficulty">Difficulty</span>
+        <div class="segmented" role="group" aria-labelledby="difficulty-label">
+          <button type="button" data-option="difficulty" data-value="easy" data-i18n="easy" aria-pressed="false">Easy</button>
+          <button type="button" data-option="difficulty" data-value="medium" data-i18n="medium" aria-pressed="true">Medium</button>
+          <button type="button" data-option="difficulty" data-value="impossible" data-i18n="impossible" aria-pressed="false">Impossible</button>
+        </div>
+      </div>
+      <div class="settings-foot">
+        <p class="hint" data-i18n="hint">Keyboard: 1–9 (numpad layout) or arrows + Enter.</p>
+        <button id="reset-score" class="btn btn-ghost" type="button" data-i18n="resetScore">Reset score</button>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <a href="https://github.com/celaldrg/tic-tac-toe" rel="noopener" data-i18n="footer">MIT · Source on GitHub</a>
+  </footer>
+</body>
+</html>
