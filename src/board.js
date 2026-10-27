@@ -45,17 +45,6 @@ export function emptyCells(board) {
 }
 
 /**
- * Whose turn it is, assuming X always moves first.
- * @param {Board} board
- * @returns {Mark}
- */
-export function turnOf(board) {
-  const xs = board.filter((cell) => cell === 'X').length;
-  const os = board.filter((cell) => cell === 'O').length;
-  return xs === os ? 'X' : 'O';
-}
-
-/**
  * Returns a copy of the board with `mark` placed on `cell`.
  * @param {Board} board
  * @param {number} cell

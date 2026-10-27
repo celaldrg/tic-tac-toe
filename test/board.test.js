@@ -1,7 +1,7 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import {
-  LINES, emptyBoard, emptyCells, findWinner, isDraw, otherMark, placeMark, turnOf, winningCells,
+  LINES, emptyBoard, emptyCells, findWinner, isDraw, otherMark, placeMark, winningCells,
 } from '../src/board.js';
 
 /** Builds a board from a 9-character string such as "XO.X....." ('.' = empty). */
@@ -43,12 +43,9 @@ test('isDraw is true only for a full board without a winner', () => {
   assert.equal(isDraw(emptyBoard()), false);
 });
 
-test('emptyCells, turnOf and otherMark', () => {
+test('emptyCells and otherMark', () => {
   assert.deepEqual(emptyCells(emptyBoard()), [0, 1, 2, 3, 4, 5, 6, 7, 8]);
   assert.deepEqual(emptyCells(parse('X...O...X')), [1, 2, 3, 5, 6, 7]);
-  assert.equal(turnOf(emptyBoard()), 'X');
-  assert.equal(turnOf(parse('X........')), 'O');
-  assert.equal(turnOf(parse('X...O....')), 'X');
   assert.equal(otherMark('X'), 'O');
   assert.equal(otherMark('O'), 'X');
 });

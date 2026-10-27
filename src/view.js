@@ -103,7 +103,6 @@ function createMarkSvg(doc, mark, animate) {
  */
 function renderBoard(view, state, t, cursor) {
   view.board.classList.toggle('can-play', state.status === 'playing' && !isAiTurn(state));
-  view.board.classList.toggle('is-over', state.status !== 'playing');
   view.cells.forEach((button, cell) => {
     const mark = state.board[cell];
     if ((button.dataset.mark ?? null) !== mark) {

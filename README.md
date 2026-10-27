@@ -52,7 +52,7 @@ node --test
 Node.js 20 or newer, no install step. The suite covers:
 
 - **The AI never loses:** exhaustive search over every opponent move, with the AI trying every one of its optimal moves, both when it plays first and second; plus the same check through the game API that the UI uses.
-- The AI takes an immediate win and blocks an immediate loss in every reachable position; faster wins and slower losses are preferred.
+- The AI takes an immediate win and blocks an immediate loss in every reachable position (facing a double threat it still blocks one); faster wins and slower losses are preferred.
 - Winner detection on all 8 lines for both marks, and draw detection.
 - Game flow: turns, illegal moves, scoring, next round, score reset, the demo position.
 - Keyboard mapping, seeded random numbers, storage helper (including a throwing storage), status texts, SVG geometry, and that English and Turkish define the same strings.
@@ -135,7 +135,7 @@ node --test
 Node.js 20 ya da üstü yeterli, kurulum gerekmez. Testler şunları kapsar:
 
 - **Yapay zekâ hiç kaybetmez:** rakibin her hamlesini ve yapay zekânın her en iyi hamlesini deneyen kapsamlı arama, hem ilk hem ikinci oynarken; aynı kontrol arayüzün kullandığı oyun API'si üzerinden de yapılır.
-- Ulaşılabilen her konumda yapay zekâ anında kazanır ve anında kaybı engeller; hızlı galibiyet ve geç mağlubiyet tercih edilir.
+- Ulaşılabilen her konumda yapay zekâ anında kazanır ve anında kaybı engeller (çift tehditte bile birini kapatır); hızlı galibiyet ve geç mağlubiyet tercih edilir.
 - Her iki işaret için 8 çizginin tamamında kazanan tespiti ve beraberlik tespiti.
 - Oyun akışı: sıra, geçersiz hamleler, skor, sonraki tur, skor sıfırlama, demo konumu.
 - Klavye eşlemesi, tohumlu rastgele sayılar, depolama yardımcısı (hata fırlatan depolama dahil), durum metinleri, SVG geometrisi ve İngilizce ile Türkçenin aynı metinleri tanımladığı.

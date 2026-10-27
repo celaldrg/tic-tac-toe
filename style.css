@@ -143,6 +143,7 @@ button {
 }
 
 .brand {
+  flex: 1 1 auto;
   display: flex;
   align-items: center;
   gap: 10px;
@@ -179,12 +180,33 @@ button {
   font-weight: 800;
   letter-spacing: -0.01em;
   white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  padding-right: 0.1em; /* keeps the last glyph's overhang inside the clip */
 }
 
 .actions {
   display: flex;
   gap: 8px;
   flex: none;
+}
+
+/* Narrow phones: a tighter header so the whole title still fits beside the buttons. */
+@media (max-width: 399px) {
+  .topbar,
+  .brand {
+    gap: 8px;
+  }
+
+  .brand h1 {
+    font-size: 1.1rem;
+  }
+}
+
+@media (max-width: 359px) {
+  .logo {
+    display: none;
+  }
 }
 
 .footer {
@@ -222,7 +244,8 @@ button {
 }
 
 .play {
-  --board-size: min(100%, 520px, calc(100svh - 290px));
+  /* Fits the viewport height, but never below 240px, above 520px or wider than the column. */
+  --board-size: min(100%, clamp(240px, 100svh - 290px, 520px));
   grid-area: play;
   align-content: start;
   display: grid;
@@ -328,12 +351,16 @@ button {
 /* ---------- Status ---------- */
 
 .status-row {
-  width: min(100%, var(--board-size));
+  width: var(--board-size);
   min-height: 44px;
   display: flex;
   align-items: center;
   justify-content: space-between;
   gap: 12px;
+}
+
+.status-row .btn {
+  flex: none;
 }
 
 .status {
@@ -358,13 +385,12 @@ button {
 
 @media (min-width: 860px) {
   .play {
-    --board-size: min(100%, 520px, calc(100svh - 220px));
+    --board-size: min(100%, clamp(240px, 100svh - 220px, 520px));
   }
 }
 
 .board-card {
   width: var(--board-size);
-  min-width: 240px;
   padding: 8px;
   background: linear-gradient(160deg, var(--surface-2), var(--surface) 55%);
   border: 1px solid var(--line);
@@ -511,7 +537,7 @@ button {
 
 .win-line.is-shown path {
   stroke-dasharray: 1;
-  animation: draw 320ms var(--ease) 230ms both;
+  animation: draw 250ms var(--ease) var(--fast) both;
 }
 
 /* ---------- Settings ---------- */

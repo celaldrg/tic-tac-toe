@@ -2,12 +2,19 @@ import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { DIFFICULTIES, bestMoves, chooseMove, scoreMoves } from '../src/ai.js';
 import {
-  emptyBoard, emptyCells, findWinner, otherMark, placeMark, turnOf, winningCells,
+  emptyBoard, emptyCells, findWinner, otherMark, placeMark, winningCells,
 } from '../src/board.js';
 import { createRng } from '../src/rng.js';
 
 /** Builds a board from a 9-character string such as "XO.X....." ('.' = empty). */
 const parse = (text) => [...text].map((ch) => (ch === '.' ? null : ch));
+
+/** Side to move in a position reached by legal play (X always opens). */
+function turnOf(board) {
+  const xs = board.filter((cell) => cell === 'X').length;
+  const os = board.filter((cell) => cell === 'O').length;
+  return xs === os ? 'X' : 'O';
+}
 
 /**
  * Plays out every game where the opponent tries every legal reply and the
@@ -85,6 +92,27 @@ test('in every reachable position the AI blocks a single immediate threat', () =
     if (winningCells(board, mark).length > 0 || threats.length !== 1) continue;
     checked += 1;
     assert.deepEqual(bestMoves(board, mark), threats, `failed to block on ${board}`);
+  }
+  assert.ok(checked > 100);
+});
+
+test('in a lost fork position the AI still blocks one of the threats', () => {
+  // X threatens 3 (left column) and 7 (bottom row): every O reply loses next move.
+  const board = parse('X.O.O.X.X');
+  const scores = scoreMoves(board, 'O');
+  assert.equal(new Set(scores.map(({ score }) => score)).size, 1, 'all replies should tie');
+  assert.ok(scores[0].score < 0, 'position should be lost for O');
+  assert.deepEqual(bestMoves(board, 'O'), [3, 7]);
+});
+
+test('in every reachable fork position the AI blocks one of the threats', () => {
+  let checked = 0;
+  for (const board of liveReachablePositions()) {
+    const mark = turnOf(board);
+    const threats = winningCells(board, otherMark(mark));
+    if (winningCells(board, mark).length > 0 || threats.length < 2) continue;
+    checked += 1;
+    for (const cell of bestMoves(board, mark)) assert.ok(threats.includes(cell), `ignored the fork on ${board}`);
   }
   assert.ok(checked > 100);
 });

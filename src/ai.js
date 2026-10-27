@@ -71,7 +71,9 @@ export function scoreMoves(board, mark) {
 }
 
 /**
- * All moves that share the best minimax score.
+ * The moves that share the best minimax score. Ties go to moves that block
+ * an immediate threat: after a fork every reply loses equally fast, and a
+ * block at least makes the opponent find the other winning cell.
  * @param {Board} board
  * @param {Mark} mark The side to move.
  * @returns {number[]} Ascending cell indexes; empty when the game is over.
@@ -79,7 +81,10 @@ export function scoreMoves(board, mark) {
 export function bestMoves(board, mark) {
   const scored = scoreMoves(board, mark);
   const top = Math.max(...scored.map((move) => move.score));
-  return scored.filter((move) => move.score === top).map((move) => move.cell);
+  const best = scored.filter((move) => move.score === top).map((move) => move.cell);
+  const threats = winningCells(board, otherMark(mark));
+  const blocks = best.filter((cell) => threats.includes(cell));
+  return blocks.length > 0 ? blocks : best;
 }
 
 /**
