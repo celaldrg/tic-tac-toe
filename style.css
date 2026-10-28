@@ -253,7 +253,8 @@ button {
   justify-items: center;
 }
 
-@media (min-width: 860px) {
+/* Wide and tall enough: board left, panel right. Short landscape screens have their own layout at the end. */
+@media (min-width: 860px) and (min-height: 501px) {
   .layout {
     grid-template-columns: minmax(0, 1fr) 320px;
     grid-template-areas: "play scores" "play settings";
@@ -338,7 +339,7 @@ button {
   }
 }
 
-@media (min-width: 860px) {
+@media (min-width: 860px) and (min-height: 501px) {
   .score {
     padding: 14px 8px;
   }
@@ -351,6 +352,7 @@ button {
 /* ---------- Status ---------- */
 
 .status-row {
+  container-type: inline-size;
   width: var(--board-size);
   min-height: 44px;
   display: flex;
@@ -366,7 +368,26 @@ button {
 .status {
   font-size: 1.1rem;
   font-weight: 700;
+  line-height: 1.2; /* two lines still fit in the 44px row, so a wrapped message never moves the board */
   min-width: 0;
+  overflow-wrap: break-word;
+}
+
+/* Narrow rows (small phones, landscape): a smaller message and a slimmer button keep it on one line. */
+@container (max-width: 320px) {
+  .status {
+    font-size: 1rem;
+  }
+
+  .status-row .btn {
+    padding: 0 12px;
+  }
+}
+
+@container (max-width: 220px) {
+  .status {
+    font-size: 0.9rem;
+  }
 }
 
 .status[data-tone="X"] {
@@ -383,7 +404,7 @@ button {
 
 /* ---------- Board ---------- */
 
-@media (min-width: 860px) {
+@media (min-width: 860px) and (min-height: 501px) {
   .play {
     --board-size: min(100%, clamp(240px, 100svh - 220px, 520px));
   }
@@ -662,7 +683,7 @@ button {
   }
 }
 
-@media (min-width: 860px) {
+@media (min-width: 860px) and (min-height: 501px) {
   .settings {
     grid-template-columns: minmax(0, 1fr);
     grid-template-areas: "mode" "mark" "difficulty" "foot";
@@ -688,6 +709,42 @@ button {
     align-self: flex-start;
     padding: 0 10px;
     margin-left: -10px;
+  }
+}
+
+/* ---------- Short landscape screens (phones turned sideways) ---------- */
+
+/* The board uses the full height on the left; scores and settings sit beside it. */
+@media (orientation: landscape) and (max-height: 500px) and (min-width: 560px) {
+  .topbar {
+    padding-top: 8px;
+    padding-bottom: 8px;
+  }
+
+  .layout {
+    grid-template-columns: auto minmax(0, 360px);
+    grid-template-areas: "play scores" "play settings";
+    grid-template-rows: auto 1fr;
+    justify-content: center;
+    gap: 8px 20px;
+    padding-top: 0;
+  }
+
+  .play {
+    /* 120px = 60px header + 44px status row + 8px gap + 8px bottom padding; the side column keeps 320px. */
+    --board-size: max(180px, min(100svh - 120px, 100vw - 372px));
+    gap: 8px;
+  }
+
+  .score {
+    padding-top: 6px;
+    padding-bottom: 6px;
+  }
+
+  .settings {
+    align-self: start;
+    gap: 10px;
+    padding: 10px 12px;
   }
 }
 
